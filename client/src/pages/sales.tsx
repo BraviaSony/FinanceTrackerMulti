@@ -319,7 +319,7 @@ export default function SalesPage() {
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Sales</CardTitle>
+              <CardTitle className="text-sm font-medium text-blue-900">Total Sales</CardTitle>
               <DollarSign className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -342,7 +342,7 @@ export default function SalesPage() {
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Gross Profit</CardTitle>
+                <CardTitle className="text-sm font-medium text-blue-900">Gross Profit</CardTitle>
                 <TrendingUp className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
@@ -365,7 +365,7 @@ export default function SalesPage() {
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Net Profit</CardTitle>
+                <CardTitle className="text-sm font-medium text-blue-900">Net Profit</CardTitle>
                 <BarChart3 className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
@@ -388,7 +388,7 @@ export default function SalesPage() {
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Cost</CardTitle>
+                <CardTitle className="text-sm font-medium text-blue-900">Total Cost</CardTitle>
                 <DollarSign className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
@@ -414,7 +414,7 @@ export default function SalesPage() {
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle>Sales Records</CardTitle>
+              <CardTitle className="text-blue-900">Sales Records</CardTitle>
               <Button
                 onClick={handleExport}
                 variant="outline"

@@ -80,7 +80,7 @@ export default function Dashboard() {
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Sales</CardTitle>
+              <CardTitle className="text-sm font-medium text-blue-900">Total Sales</CardTitle>
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -97,7 +97,7 @@ export default function Dashboard() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Expenses</CardTitle>
+              <CardTitle className="text-sm font-medium text-blue-900">Total Expenses</CardTitle>
               <Receipt className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -114,7 +114,7 @@ export default function Dashboard() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Outstanding Liabilities</CardTitle>
+              <CardTitle className="text-sm font-medium text-blue-900">Outstanding Liabilities</CardTitle>
               <CreditCard className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -131,7 +131,7 @@ export default function Dashboard() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Salary Status</CardTitle>
+              <CardTitle className="text-sm font-medium text-blue-900">Salary Status</CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -148,7 +148,7 @@ export default function Dashboard() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Net Cash Flow</CardTitle>
+              <CardTitle className="text-sm font-medium text-blue-900">Net Cash Flow</CardTitle>
               {summary.netCashflow >= 0 ? (
                 <TrendingUp className="h-4 w-4 text-green-600" />
               ) : (
@@ -172,7 +172,7 @@ export default function Dashboard() {
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Profit</CardTitle>
+              <CardTitle className="text-sm font-medium text-blue-900">Total Profit</CardTitle>
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -189,7 +189,7 @@ export default function Dashboard() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Pending Salaries</CardTitle>
+              <CardTitle className="text-sm font-medium text-blue-900">Pending Salaries</CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -206,7 +206,7 @@ export default function Dashboard() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Business in Hand</CardTitle>
+              <CardTitle className="text-sm font-medium text-blue-900">Business in Hand</CardTitle>
               <Briefcase className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -223,7 +223,7 @@ export default function Dashboard() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Cash Flow Ratio</CardTitle>
+              <CardTitle className="text-sm font-medium text-blue-900">Cash Flow Ratio</CardTitle>
               <BarChart3 className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -242,7 +242,7 @@ export default function Dashboard() {
           {/* Cash Flow Trend */}
           <Card>
             <CardHeader>
-              <CardTitle>Cash Flow Trend</CardTitle>
+              <CardTitle className="text-blue-900">Cash Flow Trend</CardTitle>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
@@ -262,7 +262,7 @@ export default function Dashboard() {
           {/* Expenses by Category */}
           <Card>
             <CardHeader>
-              <CardTitle>Expenses by Category</CardTitle>
+              <CardTitle className="text-blue-900">Expenses by Category</CardTitle>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
@@ -290,7 +290,7 @@ export default function Dashboard() {
           {/* Sales Trend */}
           <Card>
             <CardHeader>
-              <CardTitle>Sales & Profit Trend</CardTitle>
+              <CardTitle className="text-blue-900">Sales & Profit Trend</CardTitle>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
@@ -309,7 +309,7 @@ export default function Dashboard() {
           {/* Liabilities by Due Date */}
           <Card>
             <CardHeader>
-              <CardTitle>Liabilities by Due Date</CardTitle>
+              <CardTitle className="text-blue-900">Liabilities by Due Date</CardTitle>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
@@ -328,7 +328,7 @@ export default function Dashboard() {
         {/* Recent Activity */}
         <Card>
           <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
+            <CardTitle className="text-blue-900">Recent Activity</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">

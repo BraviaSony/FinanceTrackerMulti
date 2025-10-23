@@ -270,7 +270,7 @@ export default function SalariesPage() {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Payroll</CardTitle>
+                <CardTitle className="text-sm font-medium text-blue-900">Total Payroll</CardTitle>
                 <DollarSign className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
@@ -287,7 +287,7 @@ export default function SalariesPage() {
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Paid Salaries</CardTitle>
+                <CardTitle className="text-sm font-medium text-blue-900">Paid Salaries</CardTitle>
                 <CheckCircle className="h-4 w-4 text-green-600" />
               </CardHeader>
               <CardContent>
@@ -304,7 +304,7 @@ export default function SalariesPage() {
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Pending Salaries</CardTitle>
+                <CardTitle className="text-sm font-medium text-blue-900">Pending Salaries</CardTitle>
                 <Calendar className="h-4 w-4 text-orange-600" />
               </CardHeader>
               <CardContent>
@@ -321,7 +321,7 @@ export default function SalariesPage() {
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Employees</CardTitle>
+                <CardTitle className="text-sm font-medium text-blue-900">Employees</CardTitle>
                 <Users className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>

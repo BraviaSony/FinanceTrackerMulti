@@ -251,7 +251,7 @@ export default function CashflowPage() {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Inflows</CardTitle>
+                <CardTitle className="text-sm font-medium text-blue-900">Total Inflows</CardTitle>
                 <TrendingUp className="h-4 w-4 text-green-600" />
               </CardHeader>
               <CardContent>
@@ -268,7 +268,7 @@ export default function CashflowPage() {
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Outflows</CardTitle>
+                <CardTitle className="text-sm font-medium text-blue-900">Total Outflows</CardTitle>
                 <TrendingDown className="h-4 w-4 text-red-600" />
               </CardHeader>
               <CardContent>
@@ -285,7 +285,7 @@ export default function CashflowPage() {
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Net Cash Flow</CardTitle>
+                <CardTitle className="text-sm font-medium text-blue-900">Net Cash Flow</CardTitle>
                 <DollarSign className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
@@ -304,7 +304,7 @@ export default function CashflowPage() {
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Categories</CardTitle>
+                <CardTitle className="text-sm font-medium text-blue-900">Categories</CardTitle>
                 <BarChart3 className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>

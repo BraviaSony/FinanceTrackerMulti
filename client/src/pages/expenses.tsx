@@ -258,7 +258,7 @@ export default function ExpensesPage() {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Expenses</CardTitle>
+                <CardTitle className="text-sm font-medium text-blue-900">Total Expenses</CardTitle>
                 <DollarSign className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
@@ -275,7 +275,7 @@ export default function ExpensesPage() {
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Paid Expenses</CardTitle>
+                <CardTitle className="text-sm font-medium text-blue-900">Paid Expenses</CardTitle>
                 <TrendingDown className="h-4 w-4 text-green-600" />
               </CardHeader>
               <CardContent>
@@ -292,7 +292,7 @@ export default function ExpensesPage() {
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Unpaid Expenses</CardTitle>
+                <CardTitle className="text-sm font-medium text-blue-900">Unpaid Expenses</CardTitle>
                 <Calendar className="h-4 w-4 text-red-600" />
               </CardHeader>
               <CardContent>
@@ -309,7 +309,7 @@ export default function ExpensesPage() {
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Categories</CardTitle>
+                <CardTitle className="text-sm font-medium text-blue-900">Categories</CardTitle>
                 <Building className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
@@ -326,7 +326,7 @@ export default function ExpensesPage() {
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle>Expense Records</CardTitle>
+              <CardTitle className="text-blue-900">Expense Records</CardTitle>
               <Button
                 onClick={handleExport}
                 variant="outline"

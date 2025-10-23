@@ -1,5 +1,5 @@
 import { ActionCtx } from "./_generated/server";
-import { Rebolt } from "@rebolt-ai/convex/v1";
+import { Rebolt } from "@rebolt-ai/convex";
 import type { ActionConfig, ActionMap } from "@rebolt-ai/convex/v1/core";
 
 // Example of how to use the helper function. Browse the rebolt SDK docs to get information on the available actions, input and output interfaces.

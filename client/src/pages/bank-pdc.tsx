@@ -305,7 +305,7 @@ export default function BankPdcPage() {
           <div className="grid gap-4 md:grid-cols-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total PDCs</CardTitle>
+                <CardTitle className="text-sm font-medium text-blue-900">Total PDCs</CardTitle>
                 <CreditCard className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
@@ -315,7 +315,7 @@ export default function BankPdcPage() {
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Pending Amount</CardTitle>
+                <CardTitle className="text-sm font-medium text-blue-900">Pending Amount</CardTitle>
                 <Calendar className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
@@ -329,7 +329,7 @@ export default function BankPdcPage() {
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Cleared Amount</CardTitle>
+                <CardTitle className="text-sm font-medium text-blue-900">Cleared Amount</CardTitle>
                 <Building2 className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
@@ -343,7 +343,7 @@ export default function BankPdcPage() {
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Banks</CardTitle>
+                <CardTitle className="text-sm font-medium text-blue-900">Total Banks</CardTitle>
                 <Building2 className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>

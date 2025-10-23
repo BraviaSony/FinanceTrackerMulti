@@ -337,7 +337,7 @@ export default function LiabilitiesPage() {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Liabilities</CardTitle>
+                <CardTitle className="text-sm font-medium text-blue-900">Total Liabilities</CardTitle>
                 <DollarSign className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
@@ -354,7 +354,7 @@ export default function LiabilitiesPage() {
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Outstanding Balance</CardTitle>
+                <CardTitle className="text-sm font-medium text-blue-900">Outstanding Balance</CardTitle>
                 <CreditCard className="h-4 w-4 text-red-600" />
               </CardHeader>
               <CardContent>
@@ -371,7 +371,7 @@ export default function LiabilitiesPage() {
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Paid Amount</CardTitle>
+                <CardTitle className="text-sm font-medium text-blue-900">Paid Amount</CardTitle>
                 <Banknote className="h-4 w-4 text-green-600" />
               </CardHeader>
               <CardContent>
@@ -388,7 +388,7 @@ export default function LiabilitiesPage() {
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Overdue</CardTitle>
+                <CardTitle className="text-sm font-medium text-blue-900">Overdue</CardTitle>
                 <AlertTriangle className="h-4 w-4 text-red-600" />
               </CardHeader>
               <CardContent>
@@ -405,7 +405,7 @@ export default function LiabilitiesPage() {
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle>Liability Records</CardTitle>
+              <CardTitle className="text-blue-900">Liability Records</CardTitle>
               <Button
                 onClick={handleExport}
                 variant="outline"

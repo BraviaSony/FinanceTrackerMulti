@@ -267,7 +267,7 @@ export const seedDatabase = action({
     // 1. SALES DATA - Multiple entries with different currencies and scenarios
     const salesData = [
       {
-        date: "2024-01-15",
+        date: "2025-06-15",
         description: "Enterprise Software License - Annual Subscription",
         cost: 25000,
         sellingPrice: 45000,
@@ -275,7 +275,7 @@ export const seedDatabase = action({
         currency: "USD",
       },
       {
-        date: "2024-01-20",
+        date: "2025-06-20",
         description: "Mobile App Development - iOS & Android",
         cost: 18000,
         sellingPrice: 35000,
@@ -283,7 +283,7 @@ export const seedDatabase = action({
         currency: "USD",
       },
       {
-        date: "2024-02-05",
+        date: "2025-06-05",
         description: "E-commerce Platform with Payment Gateway",
         cost: 32000,
         sellingPrice: 65000,
@@ -291,7 +291,7 @@ export const seedDatabase = action({
         currency: "USD",
       },
       {
-        date: "2024-02-12",
+        date: "2025-07-12",
         description: "Digital Marketing Campaign - Q1",
         cost: 8500,
         sellingPrice: 15000,
@@ -299,7 +299,7 @@ export const seedDatabase = action({
         currency: "AED",
       },
       {
-        date: "2024-02-18",
+        date: "2025-08-18",
         description: "Cloud Infrastructure Setup",
         cost: 12000,
         sellingPrice: 22000,
@@ -316,7 +316,7 @@ export const seedDatabase = action({
     // 2. EXPENSES DATA - Various categories and statuses
     const expensesData = [
       {
-        date: "2024-01-08",
+        date: "2025-06-08",
         category: "Office Equipment",
         description: "MacBook Pro 16-inch for development team",
         vendor: "Apple Store",
@@ -325,7 +325,7 @@ export const seedDatabase = action({
         currency: "USD",
       },
       {
-        date: "2024-01-12",
+        date: "2025-06-12",
         category: "Software Licenses",
         description: "Adobe Creative Suite Annual License",
         vendor: "Adobe Inc",
@@ -334,7 +334,7 @@ export const seedDatabase = action({
         currency: "USD",
       },
       {
-        date: "2024-01-18",
+        date: "2025-06-18",
         category: "Marketing",
         description: "Google Ads Campaign - January",
         vendor: "Google LLC",
@@ -343,7 +343,7 @@ export const seedDatabase = action({
         currency: "USD",
       },
       {
-        date: "2024-02-02",
+        date: "2025-08-08",
         category: "Office Rent",
         description: "Monthly office rent - February",
         vendor: "Property Management Co",
@@ -352,7 +352,7 @@ export const seedDatabase = action({
         currency: "AED",
       },
       {
-        date: "2024-02-08",
+        date: "2025-08-08",
         category: "Utilities",
         description: "Electricity and Internet - February",
         vendor: "Utility Services",
@@ -361,7 +361,7 @@ export const seedDatabase = action({
         currency: "AED",
       },
       {
-        date: "2024-02-15",
+        date: "2025-08-15",
         category: "Travel",
         description: "Client meeting travel expenses",
         vendor: "Emirates Airlines",
@@ -381,8 +381,8 @@ export const seedDatabase = action({
       {
         lenderParty: "First National Bank",
         liabilityType: "Business Loan",
-        startDate: "2023-06-15",
-        dueDate: "2024-06-15",
+        startDate: "2024-06-15",
+        dueDate: "2025-06-15",
         originalAmount: 50000,
         currency: "USD",
         description: "Business expansion loan with 5.5% interest rate",
@@ -390,8 +390,8 @@ export const seedDatabase = action({
       {
         lenderParty: "Equipment Finance Corp",
         liabilityType: "Equipment Loan",
-        startDate: "2023-10-30",
-        dueDate: "2024-04-30",
+        startDate: "2024-10-30",
+        dueDate: "2025-10-30",
         originalAmount: 25000,
         currency: "USD",
         description: "Equipment financing for office setup",
@@ -399,8 +399,8 @@ export const seedDatabase = action({
       {
         lenderParty: "Office Supplies Ltd",
         liabilityType: "Trade Payable",
-        startDate: "2024-02-20",
-        dueDate: "2024-03-20",
+        startDate: "2025-08-20",
+        dueDate: "2025-10-20",
         originalAmount: 8500,
         currency: "AED",
         description: "Office furniture and supplies payment",
@@ -408,8 +408,8 @@ export const seedDatabase = action({
       {
         lenderParty: "Software Vendor Inc",
         liabilityType: "Software License Payable",
-        startDate: "2023-11-10",
-        dueDate: "2024-05-10",
+        startDate: "2025-10-10",
+        dueDate: "2025-1-10",
         originalAmount: 12000,
         currency: "SAR",
         description: "Annual software license payment",
@@ -427,8 +427,8 @@ export const seedDatabase = action({
         employeeName: "John Smith",
         role: "Senior Developer",
         netSalary: 8850, // 8500 + 1200 - 850
-        month: "2024-01",
-        paymentDate: "2024-01-31",
+        month: "2025-06",
+        paymentDate: "2025-06-31",
         paymentStatus: "paid" as const,
         currency: "USD",
       },
@@ -436,8 +436,8 @@ export const seedDatabase = action({
         employeeName: "Sarah Johnson",
         role: "UI/UX Designer",
         netSalary: 6650, // 6500 + 800 - 650
-        month: "2024-01",
-        paymentDate: "2024-01-31",
+        month: "2025-06",
+        paymentDate: "2025-06-31",
         paymentStatus: "paid" as const,
         currency: "USD",
       },
@@ -445,8 +445,8 @@ export const seedDatabase = action({
         employeeName: "Ahmed Al-Rashid",
         role: "Project Manager",
         netSalary: 8020, // 7800 + 1000 - 780
-        month: "2024-02",
-        paymentDate: "2024-02-29",
+        month: "2025-08",
+        paymentDate: "2025-08-29",
         paymentStatus: "pending" as const,
         currency: "AED",
       },
@@ -454,8 +454,8 @@ export const seedDatabase = action({
         employeeName: "Maria Garcia",
         role: "Marketing Specialist",
         netSalary: 5550, // 5500 + 600 - 550
-        month: "2024-02",
-        paymentDate: "2024-02-29",
+        month: "2025-08",
+        paymentDate: "2025-08-29",
         paymentStatus: "pending" as const,
         currency: "SAR",
       },
@@ -469,7 +469,7 @@ export const seedDatabase = action({
     // 5. BANK PDC DATA - Post-dated cheques with various statuses
     const bankPdcData = [
       {
-        date: "2024-03-15",
+        date: "2025-09-15",
         bank: "Emirates NBD",
         chequeNumber: "CHQ001234",
         code: "PDC-001",
@@ -480,7 +480,7 @@ export const seedDatabase = action({
         currency: "AED",
       },
       {
-        date: "2024-04-20",
+        date: "2025-09-20",
         bank: "First Abu Dhabi Bank",
         chequeNumber: "CHQ001235",
         code: "PDC-002",
@@ -491,7 +491,7 @@ export const seedDatabase = action({
         currency: "AED",
       },
       {
-        date: "2024-02-28",
+        date: "2025-08-28",
         bank: "ADCB Bank",
         chequeNumber: "CHQ001236",
         code: "PDC-003",
@@ -502,7 +502,7 @@ export const seedDatabase = action({
         currency: "USD",
       },
       {
-        date: "2024-05-10",
+        date: "2025-11-10",
         bank: "Mashreq Bank",
         chequeNumber: "CHQ001237",
         code: "PDC-004",
@@ -522,7 +522,7 @@ export const seedDatabase = action({
     // 6. FUTURE NEEDS DATA - Monthly planning with different types
     const futureNeedsData = [
       {
-        month: "2024-03",
+        month: "2025-09",
         description: "New Server Hardware",
         quantity: 2,
         amount: 5500,
@@ -530,7 +530,7 @@ export const seedDatabase = action({
         currency: "USD",
       },
       {
-        month: "2024-04",
+        month: "2025-10",
         description: "Office Expansion - Additional Desks",
         quantity: 5,
         amount: 1200,
@@ -538,7 +538,7 @@ export const seedDatabase = action({
         currency: "AED",
       },
       {
-        month: "2024-03",
+        month: "2025-09",
         description: "Monthly Cloud Hosting",
         quantity: 1,
         amount: 850,
@@ -546,7 +546,7 @@ export const seedDatabase = action({
         currency: "USD",
       },
       {
-        month: "2024-05",
+        month: "2025-11",
         description: "Team Building Event",
         quantity: 1,
         amount: 3500,
@@ -554,7 +554,7 @@ export const seedDatabase = action({
         currency: "SAR",
       },
       {
-        month: "2024-04",
+        month: "2025-10",
         description: "Software Maintenance Contracts",
         quantity: 3,
         amount: 2200,
@@ -574,7 +574,7 @@ export const seedDatabase = action({
         type: "po_in_hand" as const,
         description: "Enterprise CRM System Development",
         amount: 85000,
-        expectedDate: "2024-04-15",
+        expectedDate: "2025-10-15",
         status: "confirmed" as const,
         currency: "USD",
       },
@@ -582,7 +582,7 @@ export const seedDatabase = action({
         type: "pending_invoice" as const,
         description: "Website Redesign Project - Final Payment",
         amount: 12000,
-        expectedDate: "2024-03-10",
+        expectedDate: "2025-09-10",
         status: "pending" as const,
         currency: "AED",
       },
@@ -590,7 +590,7 @@ export const seedDatabase = action({
         type: "expected_revenue" as const,
         description: "Mobile App Maintenance Contract",
         amount: 25000,
-        expectedDate: "2024-05-20",
+        expectedDate: "2025-10-20",
         status: "confirmed" as const,
         currency: "SAR",
       },
@@ -598,7 +598,7 @@ export const seedDatabase = action({
         type: "po_in_hand" as const,
         description: "Digital Marketing Campaign - Q2",
         amount: 18500,
-        expectedDate: "2024-04-01",
+        expectedDate: "2025-10-01",
         status: "pending" as const,
         currency: "USD",
       },
@@ -606,7 +606,7 @@ export const seedDatabase = action({
         type: "pending_invoice" as const,
         description: "Cloud Migration Services",
         amount: 32000,
-        expectedDate: "2024-03-25",
+        expectedDate: "2025-09-25",
         status: "confirmed" as const,
         currency: "AED",
       },
