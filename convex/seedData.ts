@@ -2,9 +2,6 @@ import { action, mutation, query } from "./_generated/server";
 import { api } from "./_generated/api";
 import { v } from "convex/values";
 
-// Track seeding sessions for selective cleanup
-const SEEDING_SESSION_KEY = "seeding_session";
-
 // Mark the start of a seeding session
 export const markSeedingSession = mutation({
   args: {
@@ -12,8 +9,6 @@ export const markSeedingSession = mutation({
   },
   returns: v.null(),
   handler: async (ctx, args) => {
-    // Store the seeding session timestamp
-    // We'll use a simple document to track the session
     const existingSession = await ctx.db
       .query("seedingSessions")
       .filter((q) => q.eq(q.field("active"), true))
@@ -42,84 +37,49 @@ export const removeSeededData = action({
   handler: async (ctx) => {
     console.log("Starting removal of seeded sample data...");
 
-    // Get the active seeding session using a query
-    const activeSession = await ctx.runQuery(api.seedData.getActiveSeedingSession);
-
-    if (!activeSession) {
-      console.log("No active seeding session found");
-      return null;
-    }
-
-    const seedingStartTime = activeSession.startTime;
-    const seedingEndTime = Date.now();
-
-    console.log(`Removing data seeded between ${new Date(seedingStartTime)} and ${new Date(seedingEndTime)}`);
-
-    // For now, let's implement a simpler approach
-    // We'll remove data based on specific patterns that identify seeded data
     let totalRemoved = 0;
 
-    try {
-      // Remove sales with specific seeded descriptions
-      const allSales = await ctx.runQuery(api.sales.getAllSales);
-      const seededSales = allSales.filter(sale =>
-        sale._creationTime >= seedingStartTime &&
-        sale._creationTime <= seedingEndTime &&
-        (sale.description.includes("Enterprise Software License") ||
-         sale.description.includes("Mobile App Development") ||
-         sale.description.includes("E-commerce Platform") ||
-         sale.description.includes("Digital Marketing Campaign") ||
-         sale.description.includes("Cloud Infrastructure Setup"))
-      );
+    // Remove all data with [SEED] markers from all tables regardless of session
+    const removeDataWithSeedMarker = async (tableName: string, getAllFn: any, deleteFn: any) => {
+      try {
+        const allData = await ctx.runQuery(getAllFn);
+        const seededData = allData.filter((item: any) =>
+          (item.description?.includes("[SEED]") ||
+           item.comment?.includes("[SEED]") ||
+           item.employeeName?.includes("[SEED]") ||
+           item.lenderParty?.includes("[SEED]") ||
+           item.supplier?.includes("[SEED]") ||
+           item.vendor?.includes("[SEED]") ||
+           item.bank?.includes("[SEED]") ||
+           item.category?.includes("[SEED]"))
+        );
 
-      for (const sale of seededSales) {
-        try {
-          await ctx.runMutation(api.sales.deleteSale, { id: sale._id });
-          totalRemoved++;
-        } catch (error) {
-          console.log(`Error deleting sale ${sale._id}:`, error);
+        for (const item of seededData) {
+          try {
+            await ctx.runMutation(deleteFn, { id: item._id });
+            totalRemoved++;
+          } catch (error) {
+            console.log(`Error deleting ${tableName} item ${item._id}:`, error);
+          }
         }
+
+        console.log(`Removed ${seededData.length} seeded records from ${tableName}`);
+      } catch (error) {
+        console.log(`Error processing ${tableName}:`, error);
       }
+    };
 
-      console.log(`Removed ${seededSales.length} seeded sales records`);
-    } catch (error) {
-      console.log("Error processing sales:", error);
-    }
-
-    try {
-      // Remove expenses with specific seeded descriptions
-      const allExpenses = await ctx.runQuery(api.expenses.getAllExpenses);
-      const seededExpenses = allExpenses.filter(expense =>
-        expense._creationTime >= seedingStartTime &&
-        expense._creationTime <= seedingEndTime &&
-        (expense.description.includes("MacBook Pro") ||
-         expense.description.includes("Adobe Creative Suite") ||
-         expense.description.includes("Google Ads Campaign") ||
-         expense.description.includes("office rent") ||
-         expense.description.includes("Electricity and Internet") ||
-         expense.description.includes("travel expenses"))
-      );
-
-      for (const expense of seededExpenses) {
-        try {
-          await ctx.runMutation(api.expenses.deleteExpense, { id: expense._id });
-          totalRemoved++;
-        } catch (error) {
-          console.log(`Error deleting expense ${expense._id}:`, error);
-        }
-      }
-
-      console.log(`Removed ${seededExpenses.length} seeded expense records`);
-    } catch (error) {
-      console.log("Error processing expenses:", error);
-    }
-
-    // Mark the seeding session as inactive
-    await ctx.runMutation(api.seedData.markSeedingSessionInactive, { sessionId: activeSession._id });
+    // Remove seeded data from all tables
+    await removeDataWithSeedMarker("sales", api.sales.getAllSales, api.sales.deleteSale);
+    await removeDataWithSeedMarker("expenses", api.expenses.getAllExpenses, api.expenses.deleteExpense);
+    await removeDataWithSeedMarker("liabilities", api.liabilities.getAllLiabilities, api.liabilities.deleteLiability);
+    await removeDataWithSeedMarker("salaries", api.salaries.getAllSalaries, api.salaries.deleteSalary);
+    await removeDataWithSeedMarker("bank PDC", api.bankPdc.getAllBankPdc, api.bankPdc.deleteBankPdc);
+    await removeDataWithSeedMarker("future needs", api.futureNeeds.getAllFutureNeeds, api.futureNeeds.deleteFutureNeed);
+    await removeDataWithSeedMarker("business in hand", api.businessInHand.getAllBusinessInHand, api.businessInHand.deleteBusinessInHand);
+    await removeDataWithSeedMarker("cash flow", api.cashflow.getAllCashflow, api.cashflow.deleteCashflowEntry);
 
     console.log(`✅ Successfully removed ${totalRemoved} seeded records`);
-    console.log("User-added data has been preserved");
-
     return null;
   },
 });
@@ -249,6 +209,18 @@ export const clearAllData = action({
       console.log("Error clearing business in hand:", error);
     }
 
+    try {
+      // Clear Cash Flow entries
+      const allCashFlow = await ctx.runQuery(api.cashflow.getAllCashflow);
+      for (const cashflow of allCashFlow) {
+        await ctx.runMutation(api.cashflow.deleteCashflowEntry, { id: cashflow._id });
+        totalCleared++;
+      }
+      console.log(`Cleared ${allCashFlow.length} cash flow records`);
+    } catch (error) {
+      console.log("Error clearing cash flow:", error);
+    }
+
     return null;
   },
 });
@@ -264,47 +236,73 @@ export const seedDatabase = action({
     const seedingStartTime = Date.now();
     await ctx.runMutation(api.seedData.markSeedingSession, { startTime: seedingStartTime });
 
+    // Generate dynamic dates relative to current time
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth() + 1; // getMonth() returns 0-based
+
+    const formatDate = (year: number, month: number, day: number): string => {
+      return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+    };
+
+    const formatMonth = (year: number, month: number): string => {
+      return `${year}-${month.toString().padStart(2, '0')}`;
+    };
+
+    // Calculate relative months
+    const getRelativeMonth = (monthsAgo: number): { year: number; month: number } => {
+      let targetYear = currentYear;
+      let targetMonth = currentMonth - monthsAgo;
+
+      while (targetMonth <= 0) {
+        targetMonth += 12;
+        targetYear -= 1;
+      }
+
+      return { year: targetYear, month: targetMonth };
+    };
+
     // 1. SALES DATA - Multiple entries with different currencies and scenarios
     const salesData = [
       {
-        date: "2025-06-15",
-        description: "Enterprise Software License - Annual Subscription",
+        date: formatDate(getRelativeMonth(2).year, getRelativeMonth(2).month, 15),
+        description: "Enterprise Software License - Annual Subscription [SEED]",
         cost: 25000,
         sellingPrice: 45000,
         expenses: 3500,
         currency: "USD",
       },
       {
-        date: "2025-06-20",
-        description: "Mobile App Development - iOS & Android",
+        date: formatDate(getRelativeMonth(2).year, getRelativeMonth(2).month, 20),
+        description: "Mobile App Development - iOS & Android [SEED]",
         cost: 18000,
         sellingPrice: 35000,
         expenses: 2800,
         currency: "USD",
       },
       {
-        date: "2025-06-05",
-        description: "E-commerce Platform with Payment Gateway",
-        cost: 32000,
-        sellingPrice: 65000,
-        expenses: 5200,
-        currency: "USD",
-      },
-      {
-        date: "2025-07-12",
-        description: "Digital Marketing Campaign - Q1",
+        date: formatDate(getRelativeMonth(1).year, getRelativeMonth(1).month, 12),
+        description: "Digital Marketing Campaign - Q1 [SEED]",
         cost: 8500,
         sellingPrice: 15000,
         expenses: 1200,
         currency: "AED",
       },
       {
-        date: "2025-08-18",
-        description: "Cloud Infrastructure Setup",
+        date: formatDate(getRelativeMonth(0).year, getRelativeMonth(0).month, 18),
+        description: "Cloud Infrastructure Setup [SEED]",
         cost: 12000,
         sellingPrice: 22000,
         expenses: 1800,
         currency: "SAR",
+      },
+      {
+        date: formatDate(getRelativeMonth(0).year, getRelativeMonth(0).month, 5),
+        description: "E-commerce Platform Development [SEED]",
+        cost: 15500,
+        sellingPrice: 28000,
+        expenses: 2100,
+        currency: "USD",
       },
     ];
 
@@ -316,54 +314,54 @@ export const seedDatabase = action({
     // 2. EXPENSES DATA - Various categories and statuses
     const expensesData = [
       {
-        date: "2025-06-08",
+        date: formatDate(getRelativeMonth(2).year, getRelativeMonth(2).month, 8),
         category: "Office Equipment",
-        description: "MacBook Pro 16-inch for development team",
+        description: "MacBook Pro 16-inch for development team [SEED]",
         vendor: "Apple Store",
         amount: 2800,
         status: "paid" as const,
         currency: "USD",
       },
       {
-        date: "2025-06-12",
+        date: formatDate(getRelativeMonth(2).year, getRelativeMonth(2).month, 12),
         category: "Software Licenses",
-        description: "Adobe Creative Suite Annual License",
+        description: "Adobe Creative Suite Annual License [SEED]",
         vendor: "Adobe Inc",
         amount: 1200,
         status: "paid" as const,
         currency: "USD",
       },
       {
-        date: "2025-06-18",
+        date: formatDate(getRelativeMonth(2).year, getRelativeMonth(2).month, 18),
         category: "Marketing",
-        description: "Google Ads Campaign - January",
+        description: "Google Ads Campaign [SEED]",
         vendor: "Google LLC",
         amount: 3500,
         status: "unpaid" as const,
         currency: "USD",
       },
       {
-        date: "2025-08-08",
+        date: formatDate(getRelativeMonth(0).year, getRelativeMonth(0).month, 8),
         category: "Office Rent",
-        description: "Monthly office rent - February",
+        description: "Monthly office rent [SEED]",
         vendor: "Property Management Co",
         amount: 4500,
         status: "paid" as const,
         currency: "AED",
       },
       {
-        date: "2025-08-08",
+        date: formatDate(getRelativeMonth(0).year, getRelativeMonth(0).month, 8),
         category: "Utilities",
-        description: "Electricity and Internet - February",
+        description: "Electricity and Internet [SEED]",
         vendor: "Utility Services",
         amount: 850,
         status: "unpaid" as const,
         currency: "AED",
       },
       {
-        date: "2025-08-15",
+        date: formatDate(getRelativeMonth(0).year, getRelativeMonth(0).month, 15),
         category: "Travel",
-        description: "Client meeting travel expenses",
+        description: "Client meeting travel expenses [SEED]",
         vendor: "Emirates Airlines",
         amount: 2200,
         status: "paid" as const,
@@ -381,38 +379,38 @@ export const seedDatabase = action({
       {
         lenderParty: "First National Bank",
         liabilityType: "Business Loan",
-        startDate: "2024-06-15",
-        dueDate: "2025-06-15",
+        startDate: formatDate(getRelativeMonth(6).year, getRelativeMonth(6).month, 15),
+        dueDate: formatDate(getRelativeMonth(2).year, getRelativeMonth(2).month, 15),
         originalAmount: 50000,
         currency: "USD",
-        description: "Business expansion loan with 5.5% interest rate",
+        description: "Business expansion loan with 5.5% interest rate [SEED]",
       },
       {
         lenderParty: "Equipment Finance Corp",
         liabilityType: "Equipment Loan",
-        startDate: "2024-10-30",
-        dueDate: "2025-10-30",
+        startDate: formatDate(getRelativeMonth(4).year, getRelativeMonth(4).month, 30),
+        dueDate: formatDate(getRelativeMonth(0).year, getRelativeMonth(0).month, 30),
         originalAmount: 25000,
         currency: "USD",
-        description: "Equipment financing for office setup",
+        description: "Equipment financing for office setup [SEED]",
       },
       {
         lenderParty: "Office Supplies Ltd",
         liabilityType: "Trade Payable",
-        startDate: "2025-08-20",
-        dueDate: "2025-10-20",
+        startDate: formatDate(getRelativeMonth(0).year, getRelativeMonth(0).month, 20),
+        dueDate: formatDate(getRelativeMonth(2).year, getRelativeMonth(2).month, 20),
         originalAmount: 8500,
         currency: "AED",
-        description: "Office furniture and supplies payment",
+        description: "Office furniture and supplies payment [SEED]",
       },
       {
         lenderParty: "Software Vendor Inc",
         liabilityType: "Software License Payable",
-        startDate: "2025-10-10",
-        dueDate: "2025-1-10",
+        startDate: formatDate(getRelativeMonth(0).year, getRelativeMonth(0).month, 10),
+        dueDate: formatDate(getRelativeMonth(3).year, getRelativeMonth(3).month, 10),
         originalAmount: 12000,
         currency: "SAR",
-        description: "Annual software license payment",
+        description: "Annual software license payment [SEED]",
       },
     ];
 
@@ -424,38 +422,38 @@ export const seedDatabase = action({
     // 4. SALARIES DATA - Different employees and payment statuses
     const salariesData = [
       {
-        employeeName: "John Smith",
+        employeeName: "John Smith [SEED]",
         role: "Senior Developer",
         netSalary: 8850, // 8500 + 1200 - 850
-        month: "2025-06",
-        paymentDate: "2025-06-31",
+        month: formatMonth(getRelativeMonth(2).year, getRelativeMonth(2).month),
+        paymentDate: formatDate(getRelativeMonth(2).year, getRelativeMonth(2).month, 30),
         paymentStatus: "paid" as const,
         currency: "USD",
       },
       {
-        employeeName: "Sarah Johnson",
+        employeeName: "Sarah Johnson [SEED]",
         role: "UI/UX Designer",
         netSalary: 6650, // 6500 + 800 - 650
-        month: "2025-06",
-        paymentDate: "2025-06-31",
+        month: formatMonth(getRelativeMonth(2).year, getRelativeMonth(2).month),
+        paymentDate: formatDate(getRelativeMonth(2).year, getRelativeMonth(2).month, 30),
         paymentStatus: "paid" as const,
         currency: "USD",
       },
       {
-        employeeName: "Ahmed Al-Rashid",
+        employeeName: "Ahmed Al-Rashid [SEED]",
         role: "Project Manager",
         netSalary: 8020, // 7800 + 1000 - 780
-        month: "2025-08",
-        paymentDate: "2025-08-29",
+        month: formatMonth(getRelativeMonth(0).year, getRelativeMonth(0).month),
+        paymentDate: formatDate(getRelativeMonth(0).year, getRelativeMonth(0).month, 29),
         paymentStatus: "pending" as const,
         currency: "AED",
       },
       {
-        employeeName: "Maria Garcia",
+        employeeName: "Maria Garcia [SEED]",
         role: "Marketing Specialist",
         netSalary: 5550, // 5500 + 600 - 550
-        month: "2025-08",
-        paymentDate: "2025-08-29",
+        month: formatMonth(getRelativeMonth(0).year, getRelativeMonth(0).month),
+        paymentDate: formatDate(getRelativeMonth(0).year, getRelativeMonth(0).month, 29),
         paymentStatus: "pending" as const,
         currency: "SAR",
       },
@@ -469,45 +467,45 @@ export const seedDatabase = action({
     // 5. BANK PDC DATA - Post-dated cheques with various statuses
     const bankPdcData = [
       {
-        date: "2025-09-15",
+        date: formatDate(getRelativeMonth(1).year, getRelativeMonth(1).month, 15),
         bank: "Emirates NBD",
         chequeNumber: "CHQ001234",
         code: "PDC-001",
-        supplier: "Tech Solutions LLC",
-        description: "Payment for software development services",
+        supplier: "Tech Solutions LLC [SEED]",
+        description: "Payment for software development services [SEED]",
         amount: 15000,
         status: "pending" as const,
         currency: "AED",
       },
       {
-        date: "2025-09-20",
+        date: formatDate(getRelativeMonth(1).year, getRelativeMonth(1).month, 20),
         bank: "First Abu Dhabi Bank",
         chequeNumber: "CHQ001235",
         code: "PDC-002",
-        supplier: "Office Furniture Co",
-        description: "Office furniture and equipment payment",
+        supplier: "Office Furniture Co [SEED]",
+        description: "Office furniture and equipment payment [SEED]",
         amount: 8500,
         status: "pending" as const,
         currency: "AED",
       },
       {
-        date: "2025-08-28",
-        bank: "ADCB Bank",
+        date: formatDate(getRelativeMonth(0).year, getRelativeMonth(0).month, 28),
+        bank: "ADCB Bank [SEED]",
         chequeNumber: "CHQ001236",
         code: "PDC-003",
         supplier: "Marketing Agency",
-        description: "Digital marketing campaign payment",
+        description: "Digital marketing campaign payment [SEED]",
         amount: 12000,
         status: "cleared" as const,
         currency: "USD",
       },
       {
-        date: "2025-11-10",
-        bank: "Mashreq Bank",
+        date: formatDate(getRelativeMonth(3).year, getRelativeMonth(3).month, 10),
+        bank: "Mashreq Bank [SEED]",
         chequeNumber: "CHQ001237",
         code: "PDC-004",
         supplier: "Software Vendor",
-        description: "Annual software license payment",
+        description: "Annual software license payment [SEED]",
         amount: 6500,
         status: "pending" as const,
         currency: "SAR",
@@ -617,7 +615,64 @@ export const seedDatabase = action({
       await ctx.runMutation(api.businessInHand.createBusinessInHand, business);
     }
 
-    // 8. CURRENCY SETTINGS - Set default currency
+    // 8. CASH FLOW DATA - Manual cashflow entries for testing
+    const cashFlowData = [
+      {
+        date: formatDate(getRelativeMonth(2).year, getRelativeMonth(2).month, 15),
+        type: "inflow" as const,
+        category: "Sales Revenue",
+        description: "Enterprise Software License Payment [SEED]",
+        amount: 45000,
+        currency: "USD",
+      },
+      {
+        date: formatDate(getRelativeMonth(1).year, getRelativeMonth(1).month, 20),
+        type: "outflow" as const,
+        category: "Office Rent",
+        description: "Monthly office rental fees [SEED]",
+        amount: 4500,
+        currency: "AED",
+      },
+      {
+        date: formatDate(getRelativeMonth(1).year, getRelativeMonth(1).month, 5),
+        type: "inflow" as const,
+        category: "Service Revenue",
+        description: "Digital Marketing Campaign [SEED]",
+        amount: 15000,
+        currency: "AED",
+      },
+      {
+        date: formatDate(getRelativeMonth(0).year, getRelativeMonth(0).month, 10),
+        type: "outflow" as const,
+        category: "Software Licenses",
+        description: "Adobe Creative Suite Annual License [SEED]",
+        amount: 1200,
+        currency: "USD",
+      },
+      {
+        date: formatDate(getRelativeMonth(0).year, getRelativeMonth(0).month, 18),
+        type: "inflow" as const,
+        category: "Cloud Services",
+        description: "Cloud Infrastructure Setup [SEED]",
+        amount: 22000,
+        currency: "SAR",
+      },
+      {
+        date: formatDate(getRelativeMonth(0).year, getRelativeMonth(0).month, 20),
+        type: "outflow" as const,
+        category: "Travel",
+        description: "Client meeting expenses [SEED]",
+        amount: 2200,
+        currency: "SAR",
+      },
+    ];
+
+    console.log("Seeding cash flow data...");
+    for (const cashflow of cashFlowData) {
+      await ctx.runMutation(api.cashflow.createCashflowEntry, cashflow);
+    }
+
+    // 9. CURRENCY SETTINGS - Set default currency
     console.log("Setting up currency preferences...");
     await ctx.runMutation(api.currency.updateCurrencySettings, {
       selectedCurrency: "USD",
@@ -632,6 +687,7 @@ export const seedDatabase = action({
     console.log("   - 4 Bank PDC records");
     console.log("   - 5 Future Needs records");
     console.log("   - 5 Business in Hand records");
+    console.log("   - 6 Cash Flow records");
     console.log("   - Currency settings configured");
 
     return null;

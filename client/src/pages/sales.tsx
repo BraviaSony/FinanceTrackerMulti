@@ -24,7 +24,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Edit, Trash2, DollarSign, TrendingUp, BarChart3, Download } from "lucide-react";
+import { Plus, Edit, Trash2, DollarSign, TrendingUp, TrendingDown, BarChart3, Download } from "lucide-react";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { convertCurrency, formatCurrency, type Currency } from "@/lib/currency-utils";
@@ -320,10 +320,10 @@ export default function SalesPage() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-blue-900">Total Sales</CardTitle>
-              <DollarSign className="h-4 w-4 text-muted-foreground" />
+              <TrendingUp className="h-4 w-4 text-green-600" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-semibold">
+              <div className="text-2xl font-semibold text-green-600">
                 {salesSummary ? (
                   <span className={selectedCurrency === 'SAR' ? 'sar-symbol' : ''}>
                     {formatCurrency(salesSummary.totalSales || 0, selectedCurrency, { useCustomFont: true })}
@@ -338,77 +338,79 @@ export default function SalesPage() {
                 {salesSummary ? salesSummary.salesCount : 0} transactions
               </p>
             </CardContent>
-            </Card>
+          </Card>
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-blue-900">Gross Profit</CardTitle>
-                <TrendingUp className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-semibold">
-                  {salesSummary ? (
-                    <span className={selectedCurrency === 'SAR' ? 'sar-symbol' : ''}>
-                      {formatCurrency(salesSummary.totalGrossProfit || 0, selectedCurrency, { useCustomFont: true })}
-                    </span>
-                  ) : (
-                    <span className={selectedCurrency === 'SAR' ? 'sar-symbol' : ''}>
-                      {formatCurrency(0, selectedCurrency, { useCustomFont: true })}
-                    </span>
-                  )}
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  {salesSummary ? salesSummary.averageGrossMargin.toFixed(2) : "0.00"}% avg margin
-                </p>
-              </CardContent>
-            </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-blue-900">Total Cost</CardTitle>
+              <BarChart3 className="h-4 w-4 text-red-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-semibold text-red-600">
+                {salesSummary ? (
+                  <span className={selectedCurrency === 'SAR' ? 'sar-symbol' : ''}>
+                    {formatCurrency(salesSummary.totalCost || 0, selectedCurrency, { useCustomFont: true })}
+                  </span>
+                ) : (
+                  <span className={selectedCurrency === 'SAR' ? 'sar-symbol' : ''}>
+                    {formatCurrency(0, selectedCurrency, { useCustomFont: true })}
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Cost of goods sold
+              </p>
+            </CardContent>
+          </Card>
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-blue-900">Net Profit</CardTitle>
-                <BarChart3 className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-semibold">
-                  {salesSummary ? (
-                    <span className={selectedCurrency === 'SAR' ? 'sar-symbol' : ''}>
-                      {formatCurrency(salesSummary.totalNetProfit || 0, selectedCurrency, { useCustomFont: true })}
-                    </span>
-                  ) : (
-                    <span className={selectedCurrency === 'SAR' ? 'sar-symbol' : ''}>
-                      {formatCurrency(0, selectedCurrency, { useCustomFont: true })}
-                    </span>
-                  )}
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  {salesSummary ? salesSummary.averageNetMargin.toFixed(2) : "0.00"}% avg margin
-                </p>
-              </CardContent>
-            </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-blue-900">Gross Profit</CardTitle>
+              {salesSummary && salesSummary.totalGrossProfit >= 0 ? (
+                <TrendingUp className="h-4 w-4 text-green-600" />
+              ) : (
+                <TrendingDown className="h-4 w-4 text-red-600" />
+              )}
+            </CardHeader>
+            <CardContent>
+              <div className={`text-2xl font-semibold ${salesSummary && salesSummary.totalGrossProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                {salesSummary ? (
+                  <span className={selectedCurrency === 'SAR' ? 'sar-symbol' : ''}>
+                    {formatCurrency(salesSummary.totalGrossProfit || 0, selectedCurrency, { useCustomFont: true })}
+                  </span>
+                ) : (
+                  <span className={selectedCurrency === 'SAR' ? 'sar-symbol' : ''}>
+                    {formatCurrency(0, selectedCurrency, { useCustomFont: true })}
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Sales revenue minus cost
+              </p>
+            </CardContent>
+          </Card>
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-blue-900">Total Cost</CardTitle>
-                <DollarSign className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-semibold">
-                  {salesSummary ? (
-                    <span className={selectedCurrency === 'SAR' ? 'sar-symbol' : ''}>
-                      {formatCurrency(salesSummary.totalCost || 0, selectedCurrency, { useCustomFont: true })}
-                    </span>
-                  ) : (
-                    <span className={selectedCurrency === 'SAR' ? 'sar-symbol' : ''}>
-                      {formatCurrency(0, selectedCurrency, { useCustomFont: true })}
-                    </span>
-                  )}
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  Cost of goods sold
-                </p>
-              </CardContent>
-            </Card>
-          </div>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-blue-900">Gross Margin %</CardTitle>
+              {salesSummary && salesSummary.totalSales > 0 && salesSummary.totalGrossProfit >= 0 ? (
+                <TrendingUp className="h-4 w-4 text-green-600" />
+              ) : (
+                <TrendingDown className="h-4 w-4 text-red-600" />
+              )}
+            </CardHeader>
+            <CardContent>
+              <div className={`text-2xl font-semibold ${salesSummary && salesSummary.totalSales > 0 && salesSummary.totalGrossProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                {salesSummary && salesSummary.totalSales > 0
+                  ? ((salesSummary.totalGrossProfit / salesSummary.totalSales) * 100).toFixed(2)
+                  : "0.00"}%
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Gross profit as % of sales
+              </p>
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Sales Table */}
         <Card>

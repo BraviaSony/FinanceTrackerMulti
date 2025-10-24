@@ -1,7 +1,7 @@
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "@/pages";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import AdminPage from "./pages/admin-simple";
+import AdminPage from "./pages/admin";
 import NotFound from "./pages/not-found";
 import SalesPage from "./pages/sales";
 import ExpensesPage from "./pages/expenses";
@@ -33,9 +33,6 @@ export function App() {
 
           {/* Admin route */}
           <Route path="/admin" element={<AdminPage />} />
-          
-          {/* Testing route - Hidden for production */}
-          {false && <Route path="/test" element={<TestAllModulesPage />} />}
 
           {/* Catch all route */}
           <Route path="*" element={<NotFound />} />
