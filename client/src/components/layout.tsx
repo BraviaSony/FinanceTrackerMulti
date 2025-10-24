@@ -1,20 +1,21 @@
 import { ReactNode, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { 
-  BarChart3, 
-  DollarSign, 
-  Receipt, 
-  CreditCard, 
-  Users, 
-  TrendingUp, 
-  CheckSquare, 
-  Calendar, 
+import {
+  BarChart3,
+  DollarSign,
+  Receipt,
+  CreditCard,
+  Users,
+  TrendingUp,
+  CheckSquare,
+  Calendar,
   Briefcase,
   Menu,
   X,
   TestTube
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { cn } from "@/lib/utils";
 
 const navigation = [
@@ -115,6 +116,7 @@ export function Layout({ children }: { children: ReactNode }) {
           </Button>
           
           <div className="flex items-center space-x-4 ml-auto">
+            <ThemeToggle />
             <p className="text-sm font-bold italic text-blue-900">
               Created by: Shaharyar Khalid
             </p>
