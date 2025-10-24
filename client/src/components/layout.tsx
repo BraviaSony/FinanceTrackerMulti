@@ -48,7 +48,7 @@ export function Layout({ children }: { children: ReactNode }) {
 
       {/* Sidebar */}
       <div className={cn(
-        "fixed inset-y-0 left-0 z-50 w-64 bg-background border-r transform transition-transform duration-200 ease-in-out lg:translate-x-0 lg:static lg:inset-0",
+        "fixed inset-y-0 left-0 z-50 w-64 bg-background border-r transform transition-transform duration-200 ease-in-out lg:translate-x-0 lg:fixed lg:inset-y-0 lg:left-0",
         sidebarOpen ? "translate-x-0" : "-translate-x-full"
       )}>
         <div className="flex h-full flex-col">
@@ -103,7 +103,7 @@ export function Layout({ children }: { children: ReactNode }) {
       </div>
 
       {/* Main content */}
-      <div className="flex-1 lg:pl-0">
+      <div className="flex-1 lg:ml-64 lg:pl-0">
         {/* Top bar */}
         <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-6">
           <Button
@@ -115,16 +115,13 @@ export function Layout({ children }: { children: ReactNode }) {
             <Menu className="size-4" />
           </Button>
           
-          <div className="flex items-center space-x-4 ml-auto">
+          <div className="flex items-center ml-auto">
             <ThemeToggle />
-            <p className="text-sm font-bold italic text-blue-900">
-              Created by: Shaharyar Khalid
-            </p>
           </div>
         </header>
 
         {/* Page content */}
-        <main className="flex-1 p-6">
+        <main className="flex-1 p-4 md:p-6">
           {children}
         </main>
       </div>
